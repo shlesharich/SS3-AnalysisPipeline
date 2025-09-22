@@ -1,0 +1,59 @@
+
+#Running zUMI pipeline (for mapping the reads to the genome and extracting reads with UMIs (using template from Parekh et. al.,2018 https://github.com/sdparekh/zUMIs)
+project: SR_CLK_mito_YngnOld
+sequence_files:
+  file1:
+    name: /data/rhea/SHLESHA/2023Apr_CLK856_mito_Novogene/NovogeneData/zUMI_analysis/reads_for_zUMIs.R1.fastq.gz
+    base_definition:
+      - UMI(12-19)
+      - cDNA(23-150)
+    find_pattern: ATTGCGCAATG
+  file2:
+    name: /data/rhea/SHLESHA/2023Apr_CLK856_mito_Novogene/NovogeneData/zUMI_analysis/reads_for_zUMIs.R2.fastq.gz
+    base_definition:
+      - cDNA(1-150)
+  file3:
+    name: /data/rhea/SHLESHA/2023Apr_CLK856_mito_Novogene/NovogeneData/zUMI_analysis/reads_for_zUMIs.index.fastq.gz
+    base_definition:
+      - BC(1-8)
+reference:
+  STAR_index: /home/analysis/genome/dm6/novogene_indices/
+  GTF_file: /home/analysis/genome/dm6/refseq_2021/dm6.ncbiRefSeq.gtf
+  additional_STAR_params: '--clip3pAdapterSeq CTGTCTCTTATACACATCT'
+ 
+out_dir: /data/rhea/SHLESHA/2023Apr_CLK856_mito_Novogene/NovogeneData/zUMI_analysis/zUMI_Analysis_FINAL
+num_threads: 12
+mem_limit: 50
+filter_cutoffs:
+  BC_filter:
+    num_bases: 3
+    phred: 20
+  UMI_filter:
+    num_bases: 2
+    phred: 20
+barcodes: 
+  barcode_num: ~
+  barcode_file: /data/rhea/SHLESHA/2023Apr_CLK856_mito_Novogene/NovogeneData/zUMI_analysis/reads_for_zUMIs.expected_barcodes.txt
+  automatic: no
+  BarcodeBinning: 0
+  nReadsperCell: 100
+  demultiplex: yes
+counting_opts:
+  introns: yes
+  downsampling: '0'
+  strand: 0
+  Ham_Dist: 1
+  write_ham: no
+  velocyto: no
+  primaryHit: yes
+  twoPass: no
+make_stats: yes
+which_Stage: Filtering
+samtools_exec: samtools
+pigz_exec: pigz
+STAR_exec: /home/fpontiggia/SOURCE/STAR-2.7.7a/source
+Rscript_exec: Rscript
+read_layout: PE
+zUMIs_directory: /data/rhea/SHLESHA/zUMIs/
+
+
